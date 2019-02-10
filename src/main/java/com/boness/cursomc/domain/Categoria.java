@@ -2,9 +2,18 @@ package com.boness.cursomc.domain;
 
 import java.io.Serializable;
 
+import javax.persistence.Entity; // dependência do Entity (pacote oficial do JEE)
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+
+@Entity //Anotação para o JPA. Indica que a Classe será uma entidade do JPA
 public class Categoria implements Serializable{
 
 	private static final long serialVersionUID = 1L;
+	@Id //Estratégia para a criação automática dos campos, índice e etc. (automaticamente)
+	@GeneratedValue(strategy=GenerationType.IDENTITY) // definindo a estratégia de geração automática da chave primária (id).
 	private Integer id;
 	private String nome;
 	
