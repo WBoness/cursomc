@@ -1,11 +1,14 @@
 package com.boness.cursomc.domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Entity; // dependência do Entity (pacote oficial do JEE)
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 
 
 @Entity //Anotação para o JPA. Indica que a Classe será uma entidade do JPA
@@ -16,6 +19,9 @@ public class Categoria implements Serializable{
 	@GeneratedValue(strategy=GenerationType.IDENTITY) // definindo a estratégia de geração automática da chave primária (id).
 	private Integer id;
 	private String nome;
+	
+	@ManyToMany(mappedBy="categorias")
+	private List<Produto> produtos = new ArrayList<>(); //Associação com Produto: uma Categoria tem varios produtos
 	
 	/*  Criando métodos do construtor*/
 	
@@ -43,6 +49,14 @@ public class Categoria implements Serializable{
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
+	
+	public List<Produto> getProdutos() {
+		return produtos;
+	}
+
+	public void setProdutos(List<Produto> produtos) {
+		this.produtos = produtos;
+	}
 		
 	/* hashCode e equals */
 	
@@ -69,5 +83,7 @@ public class Categoria implements Serializable{
 			return false;
 		return true;
 	}
+
+	
 	
 }
