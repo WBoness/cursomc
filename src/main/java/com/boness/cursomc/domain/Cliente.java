@@ -29,7 +29,7 @@ public class Cliente implements Serializable{
 	private String cpfOuCnpj;
 	private Integer tipo; // ENUM -- Internamente o cliente armazenará dado como  inteiro - tem alterar nos getters e setters
 	
-	// ASSOCIAÇÕES --- TELEFONE, ENDEREÇO
+	// ASSOCIAÇÕES --- TELEFONE, ENDEREÇO, PEDIDO
 	@JsonManagedReference // proteção contra serialização ciclica: o cliente pode serializar endereço, mas o endereço não
 	@OneToMany (mappedBy ="cliente")	
 	private List<Endereco> enderecos = new ArrayList<>();//Associação Um cliente tem vários endereços (nome de papel)
@@ -42,6 +42,10 @@ public class Cliente implements Serializable{
 	@ElementCollection
 	@CollectionTable(name="TELEFONE")
 	private Set<String> telefones = new HashSet<>(); //java.util.HashSet e ..util.Set --- tem que fazer o mapeamento Objeto-relacional com o JPA
+	
+	// Mapeamento com pedidos: 
+	@OneToMany (mappedBy="cliente")
+	private List<Pedido> pedidos = new ArrayList<>(); //Lista de pedidos. Não vai para o construtor porque é uma Lista --- tem que criar os Getters e Setters
 	
 	//Construtores
 	public Cliente( ) {
@@ -112,6 +116,14 @@ public class Cliente implements Serializable{
 
 	public void setTelefones(Set<String> telefones) {
 		this.telefones = telefones;
+	}
+
+	public List<Pedido> getPedidos() {
+		return pedidos;
+	}
+
+	public void setPedidos(List<Pedido> pedidos) {
+		this.pedidos = pedidos;
 	}
 
 	//hashCode e equals
