@@ -1,4 +1,4 @@
-package com.boness.cursomc.resources.exceprions;
+package com.boness.cursomc.resources.exceptions;
 
 import javax.servlet.http.HttpServletRequest;
 

@@ -4,14 +4,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.boness.cursomc.domain.Categoria;
-import com.boness.cursomc.repositories.CetegoriaRepository;
+import com.boness.cursomc.repositories.CategoriaRepository;
 import com.boness.cursomc.services.exceptions.ObjectNotFoundException;
 
 @Service
 public class CategoriaService {
 	
 	@Autowired
-	private CetegoriaRepository repo;
+	private CategoriaRepository repo;
 	
 	public Categoria buscar (Integer id) {
 		Categoria obj = repo.findOne(id); // vai no banco de dados, busca uma categoria pelo id e retorna o objeto
