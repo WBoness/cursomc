@@ -2,7 +2,9 @@ package com.boness.cursomc.domain;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -11,6 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 @Entity
@@ -23,7 +26,16 @@ public class Pedido implements Serializable {
 	private Integer id;
 	private Date instante;
 	
-	// Associações: Pedido com pagamento - pedido com Cliente - pedido com Endereco
+	/* Associações: Pedido com pagamento - pedido com Cliente - pedido com Endereco
+	 * - Tem que fazer a associação de mão dupla: pedido tem que conhecer os itens dele o produto tem que conhecer os pedidos
+	 * - mas não estão diretamente associados: tem o itemPedido no meio
+	 * - implementa nas classes:
+	 * -- pedido --> conhecer -> Itens associados a ele -> conjunto de itens (igual no produto)
+	 * criar os Getters e Setters de itens
+	 * - Mapear com ItemPedidoPK inversamente @OnetoMany --> mapeado por id.pedido
+	*/
+	@OneToMany (mappedBy="id.pedido") //quem mapeou na classe ItemPedido
+	private Set<ItemPedido> itens = new HashSet<>(); //conhecer os itens e garantir que não terá repetição
 	// Mapeamento com Pagamento
 	@OneToOne (cascade = CascadeType.ALL, mappedBy="pedido")// Mapeamento com Pagamento 1-1 --> necessário senão dá erro de entidade transiente quando vai salvar um pedido e seu pagto	
 	private Pagamento pagamento;
@@ -81,6 +93,12 @@ public class Pedido implements Serializable {
 	public void setEndedecoDeEntrega(Endereco endedecoDeEntrega) {
 		this.endedecoDeEntrega = endedecoDeEntrega;
 	}
+	public Set<ItemPedido> getItens() { // criado para itens posteriormente
+		return itens;
+	}
+	public void setItens(Set<ItemPedido> itens) {
+		this.itens = itens;
+	}
 	
 	
 	//hashCode e equals
@@ -99,5 +117,6 @@ public class Pedido implements Serializable {
 		Pedido other = (Pedido) obj;
 		return Objects.equals(id, other.id);
 	}
+	
 
 }

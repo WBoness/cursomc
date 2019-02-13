@@ -2,8 +2,10 @@ package com.boness.cursomc.domain;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
@@ -35,6 +38,21 @@ public class Produto implements Serializable{
 			)
 	private List<Categoria> categorias = new ArrayList<>(); //Associacao com Categoria: Um produto pode ter várias categorias
 			
+	/* - Associação com Pedidos
+	 * - criar os Getters e Setters de itens
+	 * - Mapear com ItemPedidoPK inversamente @OnetoMany --> mapeado por id.produto
+	 */
+	@OneToMany (mappedBy="id.produro") //Mapeado na classe ItemPedido
+	private Set<ItemPedido> itens = new HashSet<>(); //conhecer os itens e garantir que não terá repetição
+	
+	// Também tem uma associação com pedidos --> Um produto conhece os pedidos dele (criar um getPedidos, varrendo os itens de pedidos e montando uma lista de pedidos associados aos itens)
+	public List<Pedido> getPedidos(){
+		List<Pedido> lista = new ArrayList<>(); // Inicia uma lista de pedidos
+		for (ItemPedido x:itens) {// percorrer a lista de itens que já existe, ara cada item de pedido x que estiver na lista de itens,
+			lista.add(x.getPedido()); // adicionar o pedido associado a ele na lista
+		}
+		return lista;
+	}
 	
 	public Produto() {
 		
@@ -79,6 +97,13 @@ public class Produto implements Serializable{
 	public void setCategorias(List<Categoria> categorias) {
 		this.categorias = categorias;
 	}
+	public Set<ItemPedido> getItens() { //criado para a associação com pedido
+		return itens;
+	}
+
+	public void setItens(Set<ItemPedido> itens) {
+		this.itens = itens;
+	}
 
 	@Override
 	public int hashCode() {
@@ -96,6 +121,8 @@ public class Produto implements Serializable{
 		Produto other = (Produto) obj;
 		return Objects.equals(id, other.id);
 	}
+
+	
 
 
 
