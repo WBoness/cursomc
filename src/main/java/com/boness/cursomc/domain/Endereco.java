@@ -10,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity // mapeamento objeto-relacional
 public class Endereco implements Serializable{
 	private static final long serialVersionUID = 1L;
@@ -26,6 +28,7 @@ public class Endereco implements Serializable{
 	// ASSOCIAÇÕES -- DUAS (cidade e cliente)
 	//Associações:  n Endereços tem um cliente
 	
+	@JsonBackReference //Proteção contra serialização: endereço não pode serializar cliente
 	@ManyToOne
 	@JoinColumn(name="cliente_id")
 	private Cliente cliente; // observar o nome de papel na associacao no diagrama de classes;

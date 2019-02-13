@@ -16,6 +16,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
 import com.boness.cursomc.domain.enums.TipoCliente;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 @Entity // Mapeamento Objeto-relacional
 public class Cliente implements Serializable{
 	private static final long serialVersionUID = 1L;
@@ -29,7 +30,7 @@ public class Cliente implements Serializable{
 	private Integer tipo; // ENUM -- Internamente o cliente armazenará dado como  inteiro - tem alterar nos getters e setters
 	
 	// ASSOCIAÇÕES --- TELEFONE, ENDEREÇO
-	
+	@JsonManagedReference // proteção contra serialização ciclica: o cliente pode serializar endereço, mas o endereço não
 	@OneToMany (mappedBy ="cliente")	
 	private List<Endereco> enderecos = new ArrayList<>();//Associação Um cliente tem vários endereços (nome de papel)
 	
