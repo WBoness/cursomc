@@ -12,6 +12,7 @@ import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 
 import com.boness.cursomc.domain.enums.EstadoPagamento;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 @Inheritance(strategy=InheritanceType.JOINED) // herança e a estratégia de como vai usar para gerar a tabela no BD:são duas básicas - 
@@ -26,6 +27,8 @@ public abstract class Pagamento implements Serializable { // é abstrata para n�
 	private Integer id;
 	private Integer estado; //mudança para Integer
 	
+	//Endpoint com pedido
+	@JsonBackReference  //Não serializa
 	//Associações:
 	@OneToOne //relação 1-1
 	@JoinColumn(name="pedido_id") //coluna correspondente ao id do pedido --> identifica no BD o campo

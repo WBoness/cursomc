@@ -25,6 +25,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Produto implements Serializable{
@@ -50,6 +51,8 @@ public class Produto implements Serializable{
 	 * - Mapear com ItemPedidoPK inversamente @OnetoMany --> mapeado por id.produto
 	 */
 	
+	//Endpoint com pedido e ItemPedido
+	@JsonIgnore // ver anotação em pedido
 	//Mapeamento com ItemPedido
 	@OneToMany (mappedBy="id.produto") //Mapeado na classe ItemPedido -->ItemPedidoPk
 	private Set <ItemPedido> itens = new HashSet<>(); //Associação de Mão dupla(produto tem vários itens);conhecer os itens e garantir que não terá repetição
@@ -67,7 +70,8 @@ public class Produto implements Serializable{
 		// categorias não entra pois já foi iniciada
 	}
 
-
+	// Endpoint com Pedidos: evitar serialização
+	@JsonIgnore
 	// Também tem uma associação com pedidos --> Um produto conhece os pedidos dele (criar um getPedidos, varrendo os itens de pedido e montando uma lista de pedidos associados aos itens)
 		public List<Pedido> getPedidos(){
 			List<Pedido> lista = new ArrayList<>(); // Inicia uma lista de pedidos

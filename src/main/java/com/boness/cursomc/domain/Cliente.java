@@ -16,6 +16,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
 import com.boness.cursomc.domain.enums.TipoCliente;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 @Entity // Mapeamento Objeto-relacional
 public class Cliente implements Serializable{
@@ -43,7 +44,9 @@ public class Cliente implements Serializable{
 	@CollectionTable(name="TELEFONE")
 	private Set<String> telefones = new HashSet<>(); //java.util.HashSet e ..util.Set --- tem que fazer o mapeamento Objeto-relacional com o JPA
 	
-	// Mapeamento com pedidos: 
+	//EndPoint com Pedidos
+	@JsonBackReference	
+	// Mapeamento com pedidos
 	@OneToMany (mappedBy="cliente")
 	private List<Pedido> pedidos = new ArrayList<>(); //Lista de pedidos. Não vai para o construtor porque é uma Lista --- tem que criar os Getters e Setters
 	

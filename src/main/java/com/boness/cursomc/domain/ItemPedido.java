@@ -26,12 +26,16 @@ import java.util.Objects;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class ItemPedido implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
+	//Endpoint com Pedido: Não será serializado, ou seja, a partir do Item de pedido, não serializa nem pedido, nem produto
+	@JsonIgnore
 	// criação do id
-		@EmbeddedId
+	@EmbeddedId
 	private ItemPedidoPk id = new ItemPedidoPk(); 
 
 	private Double desconto;
@@ -54,11 +58,16 @@ public class ItemPedido implements Serializable{
 		this.preco = preco;		
 	}
 
+	//ignorar referencia cíclica
+	@JsonIgnore
 	public Pedido getPedido () {
 		return id.getPedido();
 	}
 	
-	
+	// tem que deixar serializar para este item aparecer no pedido
+	public Produto getProduto() {
+		return id.getProduto();
+	}
 	
 	public Double getDesconto() {
 		return desconto;

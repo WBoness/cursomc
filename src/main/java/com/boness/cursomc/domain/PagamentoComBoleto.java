@@ -5,12 +5,14 @@ import java.util.Date;
 import javax.persistence.Entity;
 
 import com.boness.cursomc.domain.enums.EstadoPagamento;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
 public class PagamentoComBoleto extends Pagamento {
 	private static final long serialVersionUID = 1L; //não coloca o serializable, mas coloca o número de versão
-
+	@JsonFormat(pattern="dd/MM/yyyy")
 	private Date dataVencimento;
+	@JsonFormat(pattern="dd/MM/yyyy hh:mm")
 	private Date dataPagamento;
 	
 	

@@ -1,5 +1,8 @@
 package com.boness.cursomc.services;
-
+/* Usado para criar o endpoint de Categoria
+ * Busca por código, utilizando o FindOne do repositório
+ * 
+ */
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
