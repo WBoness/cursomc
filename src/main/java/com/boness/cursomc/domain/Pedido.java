@@ -1,5 +1,14 @@
 package com.boness.cursomc.domain;
 
+/*
+ * 
+ * Para a associação com pedido e ItemPedido
+ * 1 Conhecer os itens de pedidos associados a pedido (conjunto de itens de pedido)
+ *   Set ....HashSet ---pedido conhece os itens associados a ele
+ * 2 Criar Getter e Setter dos itens
+ */
+
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
@@ -15,6 +24,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+
+
 
 @Entity
 public class Pedido implements Serializable {
@@ -34,8 +45,12 @@ public class Pedido implements Serializable {
 	 * criar os Getters e Setters de itens
 	 * - Mapear com ItemPedidoPK inversamente @OnetoMany --> mapeado por id.pedido
 	*/
-	@OneToMany (mappedBy="id.pedido") //quem mapeou na classe ItemPedido
-	private Set<ItemPedido> itens = new HashSet<>(); //conhecer os itens e garantir que não terá repetição
+	
+	// mapeamento com ItemPedido
+	@OneToMany (mappedBy="id.pedido") //quem mapeou na classe ItemPedido 
+	private Set <ItemPedido> itens = new HashSet<>(); //Associação de Mão dupla(pedido tem vários itens); conhecer os itens e garantir que não terá repetição
+	
+	
 	// Mapeamento com Pagamento
 	@OneToOne (cascade = CascadeType.ALL, mappedBy="pedido")// Mapeamento com Pagamento 1-1 --> necessário senão dá erro de entidade transiente quando vai salvar um pedido e seu pagto	
 	private Pagamento pagamento;
@@ -49,6 +64,8 @@ public class Pedido implements Serializable {
 		@ManyToOne
 		@JoinColumn(name="enderecoDeEntrega_id")
 	private Endereco endedecoDeEntrega; //Ver papel no diagrama - é Unidirecional: logo o endereço não conhece o pedido
+	
+		
 	//Construtores
 	public Pedido() {
 		
@@ -93,10 +110,10 @@ public class Pedido implements Serializable {
 	public void setEndedecoDeEntrega(Endereco endedecoDeEntrega) {
 		this.endedecoDeEntrega = endedecoDeEntrega;
 	}
-	public Set<ItemPedido> getItens() { // criado para itens posteriormente
+	public java.util.Set<ItemPedido> getItens() {
 		return itens;
 	}
-	public void setItens(Set<ItemPedido> itens) {
+	public void setItens(java.util.Set<ItemPedido> itens) {
 		this.itens = itens;
 	}
 	
@@ -117,6 +134,7 @@ public class Pedido implements Serializable {
 		Pedido other = (Pedido) obj;
 		return Objects.equals(id, other.id);
 	}
+	
 	
 
 }

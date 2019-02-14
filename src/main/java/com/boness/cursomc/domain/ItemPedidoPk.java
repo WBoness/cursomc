@@ -1,4 +1,14 @@
 package com.boness.cursomc.domain;
+/* 1 Tem que ter referencia para cada tabela associada
+ * 2 Implementar a interface seerializable e versão
+ * NÃO PRECISA DE CONSTRUTOR
+ * 3 Getters e Setters
+ * 4 hashCode e equals (produto e pedido)
+ * 5 Colocar a anotação Embeddable por ser subclasse da ItemPedido
+ * 6 Fazer o mapeamento do pedido e do produto: ItemProduto tem que 
+ *   conhecer um pedido e um produto: Produto 1<-* ItemPedido *->1 Pedido
+ */
+
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -7,30 +17,21 @@ import javax.persistence.Embeddable;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-@Embeddable  // clase será um subtipo
+@Embeddable //indica que é subtipo de outra classe
 public class ItemPedidoPk implements Serializable {
 	private static final long serialVersionUID = 1L;
-	/* Esta classe:
-	 * - terá uma referência para o pedido e outra para o produto
-	 * - deverá implementar serializable (colocar número de versão padrão)
-	 * - Getters e Setters
-	 * - hashCode e equals (com base nos dois atributos)
-	 * - Não precisa de construtor
-	 * - colocar a anotação embeddable para indicar que a classe é uma subclasse
-	 * - Fazer o Mapeamento
-	*/
 	
-	// Mapeamento
+	// 6 Mapeamento - ItemProduto --> produto e pedido
 	@ManyToOne
-	@JoinColumn(name="pedido_id")
+	@JoinColumn (name="pedido_id")
 	private Pedido pedido;
 	
 	@ManyToOne
-	@JoinColumn(name="produto_id")
+	@JoinColumn (name="produto_id")
 	private Produto produto;
 	
 	
-	// Getters e Setters
+	// Gettes e Setters
 	public Pedido getPedido() {
 		return pedido;
 	}
@@ -44,7 +45,7 @@ public class ItemPedidoPk implements Serializable {
 		this.produto = produto;
 	}
 	
-	//hashCode e equals
+	// hashCode e equals
 	@Override
 	public int hashCode() {
 		return Objects.hash(pedido, produto);
@@ -60,6 +61,6 @@ public class ItemPedidoPk implements Serializable {
 		ItemPedidoPk other = (ItemPedidoPk) obj;
 		return Objects.equals(pedido, other.pedido) && Objects.equals(produto, other.produto);
 	}
-	
 
+	
 }

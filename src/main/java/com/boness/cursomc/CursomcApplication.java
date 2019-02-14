@@ -13,6 +13,7 @@ import com.boness.cursomc.domain.Cidade;
 import com.boness.cursomc.domain.Cliente;
 import com.boness.cursomc.domain.Endereco;
 import com.boness.cursomc.domain.Estado;
+import com.boness.cursomc.domain.ItemPedido;
 import com.boness.cursomc.domain.Pagamento;
 import com.boness.cursomc.domain.PagamentoComBoleto;
 import com.boness.cursomc.domain.PagamentoComCartao;
@@ -25,6 +26,7 @@ import com.boness.cursomc.repositories.CidadeRepository;
 import com.boness.cursomc.repositories.ClienteRepository;
 import com.boness.cursomc.repositories.EnderecoRepository;
 import com.boness.cursomc.repositories.EstadoRepository;
+import com.boness.cursomc.repositories.ItemPedidoRepository;
 import com.boness.cursomc.repositories.PagamentoRepository;
 import com.boness.cursomc.repositories.PedidoRepository;
 import com.boness.cursomc.repositories.ProdutoRepository;
@@ -54,6 +56,9 @@ public class CursomcApplication implements CommandLineRunner { // permite execut
 	
 	@Autowired
 	private PedidoRepository pedidoRepository;
+	
+	@Autowired
+	private ItemPedidoRepository itemPedidoRepository;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(CursomcApplication.class, args);
@@ -129,6 +134,32 @@ public void run(String... args) throws Exception { // onde serão instanciados o
 	pedidoRepository.save(Arrays.asList(ped1,ped2));
 	pagamentoRepository.save(Arrays.asList(pagto1,pagto2));
 	
+	
+	//instanciar Pedidos e Itens de Pedido
+	
+	ItemPedido ip1 = new ItemPedido(ped1, p1, 0.00, 1, 2000.00);
+	ItemPedido ip2 = new ItemPedido(ped1, p3, 0.00, 2, 80.00);
+	ItemPedido ip3 = new ItemPedido(ped2, p2, 100.00, 1, 800.00);
+	
+	//Associar cada pedido com o itens - cada pedido deve conhecer os seus itens
+	ped1.getItens().addAll(Arrays.asList(ip1,ip2));
+	ped2.getItens().addAll(Arrays.asList(ip3));
+	
+	// cada produto conhecer os seus itens
+	p1.getItens().addAll(Arrays.asList(ip1));
+	p2.getItens().addAll(Arrays.asList(ip3));
+	p3.getItens().addAll(Arrays.asList(ip2));
+	
+	//Salvar na base de dados
+		/*Criar um repository
+		 * comando de salvar
+		 * 	Dependencia: @Autowired
+		 * 	criar a variável: private ItemPedidoRepository itemPedidoRepository;
+		 * 	salvar no banco: 
+		 * 
+		 */
+	itemPedidoRepository.save(Arrays.asList(ip1,ip2,ip3));
+		
 	}
 		
 }

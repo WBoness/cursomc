@@ -1,4 +1,12 @@
 package com.boness.cursomc.domain;
+/*
+ * 
+ * Para a Associação com Pedido e ItemPedido
+ * 1 Produto também conhece os itens associados a ele
+ *   Set ....HashSet
+ * 2 Criar Getter e Setter itens
+ * 3 Criar getPedidos (um produto conhece os seus pedidos)
+ */
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -20,7 +28,6 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 public class Produto implements Serializable{
-
 	private static final long serialVersionUID = 1L;
 	
 	@Id
@@ -38,22 +45,16 @@ public class Produto implements Serializable{
 			)
 	private List<Categoria> categorias = new ArrayList<>(); //Associacao com Categoria: Um produto pode ter várias categorias
 			
-	/* - Associação com Pedidos
+	/* - Associação com ItemPedidos
 	 * - criar os Getters e Setters de itens
 	 * - Mapear com ItemPedidoPK inversamente @OnetoMany --> mapeado por id.produto
 	 */
-	@OneToMany (mappedBy="id.produro") //Mapeado na classe ItemPedido
-	private Set<ItemPedido> itens = new HashSet<>(); //conhecer os itens e garantir que não terá repetição
 	
-	// Também tem uma associação com pedidos --> Um produto conhece os pedidos dele (criar um getPedidos, varrendo os itens de pedidos e montando uma lista de pedidos associados aos itens)
-	public List<Pedido> getPedidos(){
-		List<Pedido> lista = new ArrayList<>(); // Inicia uma lista de pedidos
-		for (ItemPedido x:itens) {// percorrer a lista de itens que já existe, ara cada item de pedido x que estiver na lista de itens,
-			lista.add(x.getPedido()); // adicionar o pedido associado a ele na lista
-		}
-		return lista;
-	}
+	//Mapeamento com ItemPedido
+	@OneToMany (mappedBy="id.produto") //Mapeado na classe ItemPedido -->ItemPedidoPk
+	private Set <ItemPedido> itens = new HashSet<>(); //Associação de Mão dupla(produto tem vários itens);conhecer os itens e garantir que não terá repetição
 	
+	//Construtores
 	public Produto() {
 		
 	}
@@ -66,6 +67,19 @@ public class Produto implements Serializable{
 		// categorias não entra pois já foi iniciada
 	}
 
+
+	// Também tem uma associação com pedidos --> Um produto conhece os pedidos dele (criar um getPedidos, varrendo os itens de pedido e montando uma lista de pedidos associados aos itens)
+		public List<Pedido> getPedidos(){
+			List<Pedido> lista = new ArrayList<>(); // Inicia uma lista de pedidos
+			for (ItemPedido x:itens) {// percorrer a lista de itens que já existe, ara cada item de pedido x que estiver na lista de itens,
+				lista.add(x.getPedido()); // adicionar o pedido associado a ele na lista
+			}
+			return lista;
+		}
+		
+	//Getters e Setters
+	
+	
 	public Integer getId() {
 		return id;
 	}
@@ -97,14 +111,17 @@ public class Produto implements Serializable{
 	public void setCategorias(List<Categoria> categorias) {
 		this.categorias = categorias;
 	}
-	public Set<ItemPedido> getItens() { //criado para a associação com pedido
+
+	public java.util.Set<ItemPedido> getItens() {
 		return itens;
 	}
 
-	public void setItens(Set<ItemPedido> itens) {
+	public void setItens(java.util.Set<ItemPedido> itens) {
 		this.itens = itens;
 	}
 
+
+	//hashCode e equals
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
@@ -122,6 +139,7 @@ public class Produto implements Serializable{
 		return Objects.equals(id, other.id);
 	}
 
+	
 	
 
 
